@@ -17,9 +17,12 @@ public class code_Space : MonoBehaviour
     float[] eSx = new float[3];     //tiro inimigo
     float[] eSy = new float[3];     //tiro inimigo
 
+    public int[] vida_enemies = new int[3];
+    bool[] moving = new bool[3];
+    public int vida = 3;
     public bool sg = true;
-    float velo = 0.05f;
-    float move = 0.025f;
+    float velo = 0.005f;
+    float move = 0.0025f;
     bool invert;
     bool space = false;
     bool atirando = false;
@@ -30,6 +33,9 @@ public class code_Space : MonoBehaviour
     void Start()
     {
         sb = Camera.main.ScreenToWorldPoint(new Vector2(Screen.width, Screen.height));
+        vida_enemies[0] = 3;
+        vida_enemies[1] = 3;
+        vida_enemies[2] = 3;
     }
 
     // Update is called once per frame
@@ -55,8 +61,11 @@ public class code_Space : MonoBehaviour
         //    by = 0;
         //}
         Collision_Bars();
+        Collision_Enemies();
         Move_enime();
-        Shoot_Enemi();
+        Shoot_Enemi1();
+        Shoot_Enemi2();
+        Shoot_Enemi3();
 
     }
 
@@ -71,8 +80,21 @@ public class code_Space : MonoBehaviour
         {
             Ship();
             Bars();
-            Enime();
-            Shoot_Enemi();
+            if (vida_enemies[0] > 0)
+            {
+                Enime1();
+                Shoot_Enemi1();
+            }
+            if (vida_enemies[1] > 0)
+            {
+                Enime2();
+                Shoot_Enemi2();
+            }
+            if (vida_enemies[2] > 0)
+            { 
+                Enime3();
+                Shoot_Enemi3();
+            }
             Shoot_ship();
         }
 
@@ -93,7 +115,7 @@ public class code_Space : MonoBehaviour
         GL.PopMatrix();
     }
 
-    void Enime()
+    void Enime1()
     {
         GL.PushMatrix();
         mat.SetPass(0);
@@ -104,18 +126,37 @@ public class code_Space : MonoBehaviour
         GL.Vertex3(ex[0] - 5.5f, 3.5f, 0);
         GL.Vertex3(ex[0] - 6, 2.5f, 0);
 
-        GL.Vertex3(ex[1] + 6.5f, 3.5f, 0);
-        GL.Vertex3(ex[1] + 5.5f, 3.5f, 0);
-        GL.Vertex3(ex[1] + 6, 2.5f, 0);
+        GL.End();
+        GL.PopMatrix();
+    }
+    void Enime2()
+    {
+        GL.PushMatrix();
+        mat.SetPass(0);
+        GL.Begin(GL.TRIANGLES);
+        GL.Color(Color.yellow);
 
-        GL.Vertex3(ex[2] - 0.5f, 3.5f, 0);
-        GL.Vertex3(ex[2] + 0.5f, 3.5f, 0);
-        GL.Vertex3(ex[2], 2.5f, 0);
+        GL.Vertex3(ex[1] - 0.5f, 3.5f, 0);
+        GL.Vertex3(ex[1] + 0.5f, 3.5f, 0);
+        GL.Vertex3(ex[1], 2.5f, 0);
 
         GL.End();
         GL.PopMatrix();
     }
+    void Enime3()
+    {
+        GL.PushMatrix();
+        mat.SetPass(0);
+        GL.Begin(GL.TRIANGLES);
+        GL.Color(Color.yellow);
 
+        GL.Vertex3(ex[2] + 6.5f, 3.5f, 0);
+        GL.Vertex3(ex[2] + 5.5f, 3.5f, 0);
+        GL.Vertex3(ex[2] + 6, 2.5f, 0);
+
+        GL.End();
+        GL.PopMatrix();
+    }
     void Shoot_ship()
     {
         if (!atirando)
@@ -164,28 +205,56 @@ public class code_Space : MonoBehaviour
         GL.PopMatrix();
 
     }
-    void Shoot_Enemi()
+    
+    void Shoot_Enemi1()
     {
         GL.PushMatrix();
         mat.SetPass(0);
         GL.Begin(GL.QUADS);
         GL.Color(Color.yellow);
-        //if (moving)
-        //{
-        eSx[0] = ex[0];
-        eSx[1] = ex[1];
-        eSx[2] = ex[2];
-        //}
-        GL.Vertex3(eSx[0] - 0.1f, eSy[0] + 2.5f, 0);
-        GL.Vertex3(eSx[0] + 0.1f, eSy[0] + 2.5f, 0);
-        GL.Vertex3(eSx[0] + 0.1f, eSy[0] + 2.1f, 0);
-        GL.Vertex3(eSx[0] - 0.1f, eSy[0] + 2.1f, 0);
 
-        GL.Vertex3(eSx[1] - 6.1f, eSy[1] + 2.5f, 0);
-        GL.Vertex3(eSx[1] - 5.9f, eSy[1] + 2.5f, 0);
-        GL.Vertex3(eSx[1] - 6.1f, eSy[1] + 2.1f, 0);
-        GL.Vertex3(eSx[1] - 5.9f, eSy[1] + 2.1f, 0);
+        if (!moving[0])
+        {
+            eSx[0] = ex[0];
+        }
+        GL.Vertex3(eSx[0] - 6.1f, eSy[0] + 2.5f, 0);
+        GL.Vertex3(eSx[0] - 5.9f, eSy[0] + 2.5f, 0);
+        GL.Vertex3(eSx[0] - 6.1f, eSy[0] + 2.1f, 0);
+        GL.Vertex3(eSx[0] - 5.9f, eSy[0] + 2.1f, 0);
 
+        GL.End();
+        GL.PopMatrix();
+        Move_enime_shoot1();
+    }
+    void Shoot_Enemi2()
+    {
+        GL.PushMatrix();
+        mat.SetPass(0);
+        GL.Begin(GL.QUADS);
+        GL.Color(Color.yellow);
+        if (!moving[1])
+        {
+            eSx[1] = ex[1];
+        }
+        GL.Vertex3(eSx[1] - 0.1f, eSy[1] + 2.5f, 0);
+        GL.Vertex3(eSx[1] + 0.1f, eSy[1] + 2.5f, 0);
+        GL.Vertex3(eSx[1] + 0.1f, eSy[1] + 2.1f, 0);
+        GL.Vertex3(eSx[1] - 0.1f, eSy[1] + 2.1f, 0);
+
+        GL.End();
+        GL.PopMatrix();
+        Move_enime_shoot2();
+    }
+    void Shoot_Enemi3()
+    {
+        GL.PushMatrix();
+        mat.SetPass(0);
+        GL.Begin(GL.QUADS);
+        GL.Color(Color.yellow);
+        if (!moving[2])
+        {
+            eSx[2] = ex[2];
+        }
         GL.Vertex3(eSx[2] + 6.1f, eSy[2] + 2.5f, 0);
         GL.Vertex3(eSx[2] + 5.9f, eSy[2] + 2.5f, 0);
         GL.Vertex3(eSx[2] + 6.1f, eSy[2] + 2.1f, 0);
@@ -193,12 +262,12 @@ public class code_Space : MonoBehaviour
 
         GL.End();
         GL.PopMatrix();
-        Move_enime_shoot();
+        Move_enime_shoot3();
     }
 
     void Collision_Bars()
     {
-        //tiro meio
+        //Tiros Barra
         if (eSy[0] + 2.1f <= by[0] && eSx[0] - 0.1f >= bx[0] - 6.5f && eSx[0] - 0.1f <= bx[1] - 3.5f)
         {
             if (by[0] > -2)
@@ -212,6 +281,7 @@ public class code_Space : MonoBehaviour
                 by[0] = -2;
             }
             eSy[0] = 0;
+            moving[0] = false;
         }
         if (eSy[0] + 2.1f <= by[2] && eSx[0] - 0.1f <= bx[2] + 6.5f && eSx[0] - 0.1f >= bx[3] + 3.5f)
         {
@@ -226,6 +296,7 @@ public class code_Space : MonoBehaviour
                 by[2] = -2;
             }
             eSy[0] = 0;
+            moving[0] = false;
         }
         if (eSy[0] + 2.1f <= by[4] && eSx[0] - 0.1f >= bx[4] - 1.5f && eSx[0] - 0.1f <= bx[5] + 1.5f)
         {
@@ -240,6 +311,7 @@ public class code_Space : MonoBehaviour
                 by[4] = -2;
             }
             eSy[0] = 0;
+            moving[0] = false;
         }
         //-------------------------------------------------------------------------------------------
         if (eSy[1] + 2.1f <= by[0] && eSx[1] - 6.1f >= bx[0] - 6.5f && eSx[1] - 6.1f <= bx[1] - 3.5f)
@@ -252,9 +324,10 @@ public class code_Space : MonoBehaviour
             else
             {
                 bx[0] = bx[1];
-                by[0] = -2; 
+                by[0] = -2;
             }
             eSy[1] = 0;
+            moving[1] = false;
         }
         if (eSy[1] + 2.1f <= by[4] && eSx[1] - 6.1f >= bx[4] - 1.5f && eSx[1] - 6.1f <= bx[5] + 1.5f)
         {
@@ -269,6 +342,7 @@ public class code_Space : MonoBehaviour
                 by[4] = -2;
             }
             eSy[1] = 0;
+            moving[1] = false;
         }
         //-----------------------------------------------------------------------------------------
         if (eSy[2] + 2.1f <= by[2] && eSx[2] + 5.9f <= bx[2] + 6.5f && eSx[2] + 5.9f >= bx[3] + 3.5f)
@@ -284,6 +358,7 @@ public class code_Space : MonoBehaviour
                 by[2] = -2;
             }
             eSy[2] = 0;
+            moving[2] = false;
         }
         if (eSy[2] + 2.1f <= by[4] && eSx[2] + 5.9f >= bx[4] - 1.5f && eSx[2] + 5.9f <= bx[5] + 1.5f)
         {
@@ -298,6 +373,27 @@ public class code_Space : MonoBehaviour
                 by[4] = -2;
             }
             eSy[2] = 0;
+            moving[2] = false;
+        }
+        //-----------------------------------------------------------------------------------------
+        //TIRO NA NAVE
+        if (eSy[0] + 2.1f <= -3 && eSx[0] - 0.1f >= sx - 1 && eSx[0] - 0.1f <= sx + 1)
+        {
+            vida--;
+            eSy[0] = 0;
+            moving[0] = false;
+        }
+        if (eSy[1] + 2.1f <= -3 && eSx[1] - 6.1f >= sx - 1 && eSx[1] - 6.1f <= sx + 1)
+        {
+            vida--;
+            eSy[1] = 0;
+            moving[1] = false;
+        }
+        if (eSy[2] + 2.1f <= -3 && eSx[2] + 5.9f >= sx - 1 && eSx[2] + 5.9f <= sx + 1)
+        {
+            vida--;
+            eSy[2] = 0;
+            moving[2] = false;
         }
     }
 
@@ -306,7 +402,7 @@ public class code_Space : MonoBehaviour
     {
         if ((sy - 3) < sb.y && space)
         {
-            sy += velo * 1.5f;
+            sy += velo * 3;
         }
         else
         {
@@ -341,31 +437,67 @@ public class code_Space : MonoBehaviour
         }
     }
 
-    void Move_enime_shoot()
+    void Move_enime_shoot1()
     {
         if ((eSy[0] + 2.1f) > sb.y * -1)
         {
             eSy[0] -= velo;
+            moving[0] = true;
         }
         else
         {
             eSy[0] = 0;
+            moving[0] = false;
         }
+    }
+    void Move_enime_shoot2()
+    {
         if ((eSy[1] + 2.1f) > sb.y * -1)
         {
             eSy[1] -= velo;
+            moving[1] = true;
         }
         else
         {
             eSy[1] = 0;
+            moving[1] = false;
         }
+    }
+    void Move_enime_shoot3()
+    {
         if ((eSy[2] + 2.1f) > sb.y * -1)
         {
             eSy[2] -= velo;
+            moving[2] = true;
         }
         else
         {
             eSy[2] = 0;
+            moving[2] = false;
+
         }
+    }
+
+    void Collision_Enemies()
+    {
+        if (sy - 3 >= 2.5f && sx2 - 0.1f >= ex[0] - 6.5f && sx2 - 0.1f <= ex[0] - 5.5f)
+        {
+            vida_enemies[0] -= 1;
+            sy = 0;
+            atirando = false;
+        }
+        if (sy - 3 >= 2.5f && sx2 - 0.1f >= ex[1] - 0.5f && sx2 - 0.1f <= ex[1] + 0.5f)
+        {
+            vida_enemies[1] -= 1;
+            sy = 0;
+            atirando = false;
+        }
+        if (sy - 3 >= 2.5f && sx2 - 0.1f <= ex[2] + 6.5f && sx2 - 0.1f >= ex[2] + 5.5f)
+        {
+            vida_enemies[2] -= 1;
+            sy = 0;
+            atirando = false;
+        }
+        
     }
 }
