@@ -26,7 +26,7 @@ public class code_Space : MonoBehaviour
     bool invert;
     bool space = false;
     bool atirando = false;
-
+    bool[] acertou = new bool[3];
 
 
     // Start is called before the first frame update
@@ -76,6 +76,7 @@ public class code_Space : MonoBehaviour
 
     private void OnPostRender()
     {
+        if(vida > 0)
         if (sg)
         {
             Ship();
@@ -97,19 +98,21 @@ public class code_Space : MonoBehaviour
             }
             Shoot_ship();
         }
-
+        else
+        {
+            
+        }
     }
     void Ship()
     {
         GL.PushMatrix();
         mat.SetPass(0);
-        GL.Begin(GL.QUADS);
+        GL.Begin(GL.TRIANGLES);
         GL.Color(Color.black);
 
-        GL.Vertex3(sx - 1, -3, 0);
-        GL.Vertex3(sx + 1, -3, 0);
-        GL.Vertex3(sx + 1, -5, 0);
         GL.Vertex3(sx - 1, -5, 0);
+        GL.Vertex3(sx , -4, 0);
+        GL.Vertex3(sx + 1, -5, 0);
 
         GL.End();
         GL.PopMatrix();
@@ -169,10 +172,10 @@ public class code_Space : MonoBehaviour
         GL.Begin(GL.QUADS);
         GL.Color(Color.green);
 
-        GL.Vertex3(sx2 - 0.1f, sy - 3, 0);
-        GL.Vertex3(sx2 + 0.1f, sy - 3, 0);
-        GL.Vertex3(sx2 + 0.1f, sy - 3.4f, 0);
-        GL.Vertex3(sx2 - 0.1f, sy - 3.4f, 0);
+        GL.Vertex3(sx2 - 0.1f, sy - 4, 0);
+        GL.Vertex3(sx2 + 0.1f, sy - 4, 0);
+        GL.Vertex3(sx2 + 0.1f, sy - 4.4f, 0);
+        GL.Vertex3(sx2 - 0.1f, sy - 4.4f, 0);
 
         GL.End();
         GL.PopMatrix();
@@ -282,8 +285,14 @@ public class code_Space : MonoBehaviour
             }
             eSy[0] = 0;
             moving[0] = false;
+            acertou[0] = true;
         }
-        if (eSy[0] + 2.1f <= by[2] && eSx[0] - 0.1f <= bx[2] + 6.5f && eSx[0] - 0.1f >= bx[3] + 3.5f)
+        else
+        {
+            acertou[0] = false;
+        }
+
+        if(eSy[0] + 2.1f <= by[2] && eSx[0] - 0.1f <= bx[2] + 6.5f && eSx[0] - 0.1f >= bx[3] + 3.5f)
         {
             if (by[2] > -2)
             {
@@ -297,7 +306,13 @@ public class code_Space : MonoBehaviour
             }
             eSy[0] = 0;
             moving[0] = false;
+            acertou[0] = true;
         }
+        else
+        {
+            acertou[0] = false;
+        }
+
         if (eSy[0] + 2.1f <= by[4] && eSx[0] - 0.1f >= bx[4] - 1.5f && eSx[0] - 0.1f <= bx[5] + 1.5f)
         {
             if (by[4] > -2)
@@ -312,7 +327,13 @@ public class code_Space : MonoBehaviour
             }
             eSy[0] = 0;
             moving[0] = false;
+            acertou[0] = true;
         }
+        else
+        {
+            acertou[0] = false;
+        }
+
         //-------------------------------------------------------------------------------------------
         if (eSy[1] + 2.1f <= by[0] && eSx[1] - 6.1f >= bx[0] - 6.5f && eSx[1] - 6.1f <= bx[1] - 3.5f)
         {
@@ -328,7 +349,13 @@ public class code_Space : MonoBehaviour
             }
             eSy[1] = 0;
             moving[1] = false;
+            acertou[1] = true;
         }
+        else
+        {
+            acertou[1] = false;
+        }
+
         if (eSy[1] + 2.1f <= by[4] && eSx[1] - 6.1f >= bx[4] - 1.5f && eSx[1] - 6.1f <= bx[5] + 1.5f)
         {
             if (by[4] > -2)
@@ -343,7 +370,13 @@ public class code_Space : MonoBehaviour
             }
             eSy[1] = 0;
             moving[1] = false;
+            acertou[1] = true;
         }
+        else
+        {
+            acertou[1] = false;
+        }
+
         //-----------------------------------------------------------------------------------------
         if (eSy[2] + 2.1f <= by[2] && eSx[2] + 5.9f <= bx[2] + 6.5f && eSx[2] + 5.9f >= bx[3] + 3.5f)
         {
@@ -359,7 +392,13 @@ public class code_Space : MonoBehaviour
             }
             eSy[2] = 0;
             moving[2] = false;
+            acertou[2] = true;
         }
+        else
+        {
+            acertou[2] = false;
+        }
+
         if (eSy[2] + 2.1f <= by[4] && eSx[2] + 5.9f >= bx[4] - 1.5f && eSx[2] + 5.9f <= bx[5] + 1.5f)
         {
             if (by[4] > -2)
@@ -374,26 +413,47 @@ public class code_Space : MonoBehaviour
             }
             eSy[2] = 0;
             moving[2] = false;
+            acertou[2] = true;
         }
+        else
+        {
+            acertou[2] = false;
+        }
+
         //-----------------------------------------------------------------------------------------
         //TIRO NA NAVE
-        if (eSy[0] + 2.1f <= -3 && eSx[0] - 0.1f >= sx - 1 && eSx[0] - 0.1f <= sx + 1)
+        if (eSy[0] + 2.1f <= -4 && eSx[0] - 0.1f >= sx - 1 && eSx[0] - 0.1f <= sx + 1)
         {
             vida--;
             eSy[0] = 0;
             moving[0] = false;
+            acertou[0] = true;
         }
-        if (eSy[1] + 2.1f <= -3 && eSx[1] - 6.1f >= sx - 1 && eSx[1] - 6.1f <= sx + 1)
+        else
+        {
+            acertou[0] = false;
+        }
+        if (eSy[1] + 2.1f <= -4 && eSx[1] - 6.1f >= sx - 1 && eSx[1] - 6.1f <= sx + 1)
         {
             vida--;
             eSy[1] = 0;
             moving[1] = false;
+            acertou[1] = true;
         }
-        if (eSy[2] + 2.1f <= -3 && eSx[2] + 5.9f >= sx - 1 && eSx[2] + 5.9f <= sx + 1)
+        else
+        {
+            acertou[1] = false;
+        }
+        if (eSy[2] + 2.1f <= -4 && eSx[2] + 5.9f >= sx - 1 && eSx[2] + 5.9f <= sx + 1)
         {
             vida--;
             eSy[2] = 0;
             moving[2] = false;
+            acertou[2] = true;
+        }
+        else
+        {
+            acertou[2] = false;
         }
     }
 
@@ -439,44 +499,51 @@ public class code_Space : MonoBehaviour
 
     void Move_enime_shoot1()
     {
-        if ((eSy[0] + 2.1f) > sb.y * -1)
+        if ((eSy[0] + 2.1f) > sb.y * -1 && !acertou[0])
         {
             eSy[0] -= velo;
             moving[0] = true;
+            acertou[0] = false;
         }
         else
         {
             eSy[0] = 0;
             moving[0] = false;
+            acertou[0] = true;
         }
     }
     void Move_enime_shoot2()
     {
-        if ((eSy[1] + 2.1f) > sb.y * -1)
+        if ((eSy[1] + 2.1f) > sb.y * -1 && !acertou[1])
         {
             eSy[1] -= velo;
             moving[1] = true;
+            acertou[1] = false;
         }
         else
         {
             eSy[1] = 0;
             moving[1] = false;
+            acertou[1] = true;
         }
     }
     void Move_enime_shoot3()
     {
-        if ((eSy[2] + 2.1f) > sb.y * -1)
+        if ((eSy[2] + 2.1f) > sb.y * -1 && !acertou[2])
         {
+
             eSy[2] -= velo;
             moving[2] = true;
+            acertou[2] = false;
         }
         else
         {
             eSy[2] = 0;
             moving[2] = false;
-
+            acertou[2] = true;
         }
     }
+
 
     void Collision_Enemies()
     {
@@ -484,20 +551,29 @@ public class code_Space : MonoBehaviour
         {
             vida_enemies[0] -= 1;
             sy = 0;
-            atirando = false;
+            space = false;
         }
         if (sy - 3 >= 2.5f && sx2 - 0.1f >= ex[1] - 0.5f && sx2 - 0.1f <= ex[1] + 0.5f)
         {
             vida_enemies[1] -= 1;
             sy = 0;
-            atirando = false;
+            space = false;
         }
         if (sy - 3 >= 2.5f && sx2 - 0.1f <= ex[2] + 6.5f && sx2 - 0.1f >= ex[2] + 5.5f)
         {
             vida_enemies[2] -= 1;
             sy = 0;
-            atirando = false;
+            space = false;
         }
         
     }
+
+    void gameover()
+    {
+        if (vida <= 0)
+        {
+
+        }
+    }
 }
+
